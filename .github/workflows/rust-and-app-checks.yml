@@ -88,11 +88,28 @@ jobs:
         run: npx --yes @tauri-apps/cli@2.12.2 android init --ci
       - name: Build ARM64 APK for Android phones
         run: npx --yes @tauri-apps/cli@2.12.2 android build --ci --apk --target aarch64
+      - name: Sign installable Android APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="$(find src-tauri/gen/android/app/build/outputs/apk -type f -name '*.apk' | head -n 1)"
+          test -n "$APK"
+          keytool -genkeypair -v \
+            -keystore "$RUNNER_TEMP/librecorsa-debug.keystore" \
+            -storepass android -alias androiddebugkey -keypass android \
+            -dname "CN=LibreCorsa-Rustedition Debug,O=LibreCorsa,C=US" \
+            -keyalg RSA -keysize 2048 -validity 10000
+          mkdir -p dist
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" sign \
+            --ks "$RUNNER_TEMP/librecorsa-debug.keystore" \
+            --ks-pass pass:android --key-pass pass:android \
+            --out "dist/LibreCorsa-Rustedition-android-arm64.apk" "$APK"
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "dist/LibreCorsa-Rustedition-android-arm64.apk"
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
-          name: librecorsa-android-arm64
-          path: src-tauri/gen/android/app/build/outputs/apk/**/*.apk
+          name: LibreCorsa-Rustedition-Android-ARM64
+          path: dist/LibreCorsa-Rustedition-android-arm64.apk
           if-no-files-found: error
 
   desktop-windows:
