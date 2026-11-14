@@ -55,3 +55,34 @@ jobs:
           name: librecorsa-rustedition-static
           path: out/
           if-no-files-found: error
+
+  desktop-windows:
+    name: Package Windows desktop executable
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
+      - name: Build the original game frontend
+        run: npm run build
+      - name: Prepare Windows app icon
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force src-tauri/icons | Out-Null
+          Copy-Item public/favicon.ico src-tauri/icons/icon.ico
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli --locked
+      - name: Build Windows installer and executable
+        run: cargo tauri build --bundles nsis
+      - name: Upload Windows desktop builds
+        uses: actions/upload-artifact@v4
+        with:
+          name: librecorsa-windows-desktop
+          path: |
+            src-tauri/target/release/librecorsa-desktop.exe
+            src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: error
