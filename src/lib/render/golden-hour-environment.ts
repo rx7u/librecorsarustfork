@@ -185,6 +185,12 @@ export function applyGraphicsQuality(
 ): void {
   const dprCap = quality === "low" ? 1 : 1.5;
   renderer.setPixelRatio(Math.max(0.35, Math.min(window.devicePixelRatio, dprCap) * renderScale));
+  // Keep shadows on Medium, but use a half-width cascade atlas on integrated GPUs (one quarter the texels).
+  // High retains the full 2048-per-cascade resolution; Low disables the sun shadow entirely.
+  const shadowSize = quality === "high" ? SHADOW_MAP_SIZE : 1024;
+  if (env.sunLight.shadow.mapSize.x !== shadowSize || env.sunLight.shadow.mapSize.y !== shadowSize) {
+    env.sunLight.shadow.mapSize.set(shadowSize, shadowSize);
+  }
   // Toggling the light's shadow recompiles the lit materials on their own (shadow count is part of the program key)
   env.sunLight.castShadow = quality !== "low";
   postFx.setQuality(quality);
