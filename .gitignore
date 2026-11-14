@@ -69,3 +69,7 @@ UI-RESEARCH-*.md
 /reference_data/
 /artifacts/
 *.blend1
+
+# Tauri desktop build output and CI-generated Windows icon
+/src-tauri/target/
+/src-tauri/icons/icon.ico
