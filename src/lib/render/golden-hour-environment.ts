@@ -80,9 +80,9 @@ const SHADOW_DISTANCE_M = 250;
 
 const SKY_SCALE = 4500;
 /** Linear radiance cap for the visible sun disc (bloom threshold is 1.1) */
-const SUN_DISC_MAX_RADIANCE = 8;
+const SUN_DISC_MAX_RADIANCE = 16;
 /** Brings the Sky shader's radiance to this scene's exposure (applies to the PMREM bake too) */
-const SKY_RADIANCE_SCALE = 0.12;
+const SKY_RADIANCE_SCALE = 0.15;
 const ENV_SIZE = 256;
 
 // Warm hazy horizon, picked by eye to sit between the Sky's warm horizon glow
@@ -187,7 +187,7 @@ export function applyGraphicsQuality(
   renderer.setPixelRatio(Math.max(0.35, Math.min(window.devicePixelRatio, dprCap) * renderScale));
   // Keep shadows on Medium, but use a half-width cascade atlas on integrated GPUs (one quarter the texels).
   // High retains the full 2048-per-cascade resolution; Low disables the sun shadow entirely.
-  const shadowSize = quality === "high" ? SHADOW_MAP_SIZE : 1024;
+  const shadowSize = quality === "high" ? SHADOW_MAP_SIZE : quality === "medium" ? 1536 : 1024;
   if (env.sunLight.shadow.mapSize.x !== shadowSize || env.sunLight.shadow.mapSize.y !== shadowSize) {
     env.sunLight.shadow.mapSize.set(shadowSize, shadowSize);
   }
@@ -705,7 +705,7 @@ export function createPostFx(
 
     setQuality(quality: "low" | "medium" | "high"): void {
       composer.multisampling = quality === "high" ? 4 : quality === "medium" ? 2 : 0;
-      bloom.intensity = quality === "high" ? 0.12 : 0;
+      bloom.intensity = quality === "high" ? 0.16 : quality === "medium" ? 0.08 : 0;
     },
 
     setClouds(next): void {
