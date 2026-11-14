@@ -17,7 +17,8 @@
     "upload-hosted": "node scripts/upload-hosted.mjs",
     "car-thumbs": "node --disable-warning=THREE_CJS_DEPRECATED --import tsx scripts/render-car-thumbs.ts",
     "press-kit": "node --import tsx scripts/build-press-kit.ts",
-    "home-outlines": "node --import tsx scripts/build-home-outlines.ts"
+    "home-outlines": "node --import tsx scripts/build-home-outlines.ts",
+    "tauri": "npx --yes @tauri-apps/cli@2.12.2"
   },
   "dependencies": {
     "@takram/three-atmosphere": "^0.19.1",
