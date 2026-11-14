@@ -286,7 +286,8 @@ export const LIBRARY_FAVORITES_MAX = 256;
 export const LIBRARY_RECENT_MAX = 12;
 const LIBRARY_ID_MAX_LENGTH = 64;
 
-export const DEFAULT_GRAPHICS_SETTINGS: GraphicsSettings = { quality: "high", renderScale: 1 };
+/** Balanced default for integrated GPUs; players can raise quality and render scale in the existing graphics settings. */
+export const DEFAULT_GRAPHICS_SETTINGS: GraphicsSettings = { quality: "medium", renderScale: 0.85 };
 
 export const DEFAULT_TOUCH_SETTINGS: TouchSettings = { mode: "auto", tiltSteer: false, tiltRangeDeg: 30 };
 
