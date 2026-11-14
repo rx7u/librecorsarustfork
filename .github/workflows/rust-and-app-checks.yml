@@ -80,6 +80,10 @@ jobs:
       - run: npm ci
       - name: Build the game frontend
         run: npm run build
+      - name: Prepare Android app icon
+        run: |
+          mkdir -p src-tauri/icons
+          cp public/branding/apple-touch-icon.png src-tauri/icons/icon.png
       - name: Initialize the Tauri Android project
         run: npx --yes @tauri-apps/cli@2.12.2 android init --ci
       - name: Build ARM64 APK for Android phones
