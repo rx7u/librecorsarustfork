@@ -42,6 +42,12 @@ jobs:
       - run: npm ci
       - name: Type-check the original game
         run: npm run typecheck
+      - name: Verify simulation worker parity
+        run: node --disable-warning=THREE_CJS_DEPRECATED --import tsx scripts/verify-sim-runtime.ts
+      - name: Verify tyre thermal model
+        run: node --import tsx scripts/verify-tyre-thermal.ts
+      - name: Verify tyre pressure model
+        run: node --import tsx scripts/verify-tyre-pressure.ts
       - name: Build the original game
         run: npm run build
       - name: Upload complete static game build
