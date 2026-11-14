@@ -243,10 +243,18 @@ export class CarStateView {
   /** Takes the worker's telemetry, leaving the fields the page fills in itself as they are */
   applyTelemetry(telemetry: Partial<CarTelemetry>): void {
     const mine = this.telemetry as unknown as Record<string, unknown>;
-    const pageOwned = PAGE_OWNED_TELEMETRY;
-    const saved: unknown[] = [];
-    for (let i = 0; i < pageOwned.length; i++) saved[i] = mine[pageOwned[i]];
+    const race = mine.race;
+    const runId = mine.runId;
+    const radar = mine.radar;
+    const peers = mine.peers;
+    const trackLimits = mine.trackLimits;
+    const ffbSubframeSamples = mine.ffbSubframeSamples;
     Object.assign(this.telemetry, telemetry);
-    for (let i = 0; i < pageOwned.length; i++) mine[pageOwned[i]] = saved[i];
+    mine.race = race;
+    mine.runId = runId;
+    mine.radar = radar;
+    mine.peers = peers;
+    mine.trackLimits = trackLimits;
+    mine.ffbSubframeSamples = ffbSubframeSamples;
   }
 }
