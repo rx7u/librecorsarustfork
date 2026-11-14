@@ -21,7 +21,8 @@ import { patchShader } from "./shader-patch";
 type Quality = "low" | "medium" | "high";
 
 /** Share of each tile drawn per graphics quality */
-const DENSITY: Record<Quality, number> = { high: 1, medium: 0.8, low: 0.5 };
+/** Integrated-GPU friendly: keep full foliage on High, thin distant tile instances on Medium/Low. */
+const DENSITY: Record<Quality, number> = { high: 1, medium: 0.65, low: 0.35 };
 
 let quality: Quality = "high";
 const meshes = new Set<THREE.InstancedMesh>();
