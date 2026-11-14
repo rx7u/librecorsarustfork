@@ -544,22 +544,23 @@ export function computeTyreForces(t: TyreRuntime, inp: TyreForceInput, out?: Tyr
   }
 
   if (inp.fz <= 1) {
-    // Airborne: carcass relaxes, no force
+    // Airborne: carcass relaxes, no force. Reuse the caller's scratch output so
+    // an airborne wheel does not allocate a fresh object on every physics sub-step.
     t.deflX *= 0.5;
     t.deflY *= 0.5;
-    return {
-      fx: 0,
-      fy: 0,
-      mz: 0,
-      mx: 0,
-      flatSpotVibrationNm: 0,
-      slipRatio: 0,
-      slipAngle: 0,
-      normSlip: 0,
-      mu: 0,
-      gripFactor: 1,
-      slipPower: 0,
-    };
+    const res = out ?? ({} as TyreForceOutput);
+    res.fx = 0;
+    res.fy = 0;
+    res.mz = 0;
+    res.mx = 0;
+    res.flatSpotVibrationNm = 0;
+    res.slipRatio = 0;
+    res.slipAngle = 0;
+    res.normSlip = 0;
+    res.mu = 0;
+    res.gripFactor = 1;
+    res.slipPower = 0;
+    return res;
   }
 
   // Normalised slip components
