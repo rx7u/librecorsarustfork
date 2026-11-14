@@ -1,0 +1,40 @@
+name: Rust and app checks
+
+on:
+  push:
+    branches: [rustedition-dev]
+  pull_request:
+    branches: [rustedition-dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    name: Rust tests and WebAssembly compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Run native Rust tests
+        run: cargo test --manifest-path rust/tyre-kernel/Cargo.toml
+      - name: Compile optimized WebAssembly module
+        run: cargo build --manifest-path rust/tyre-kernel/Cargo.toml --release --target wasm32-unknown-unknown
+
+  app:
+    name: TypeScript checks and production build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Type-check the original game
+        run: npm run typecheck
+      - name: Build the original game
+        run: npm run build
