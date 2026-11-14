@@ -291,9 +291,9 @@ export class PhysicalSky {
     this.quality = quality;
     const touch = isTouchDevice();
     this.clouds.qualityPreset = quality === "high" && !touch ? "medium" : "low";
-    // Medium renders the volumetric cloud pass at 75% resolution on desktop (about 44% fewer pixels);
+    // Medium renders the volumetric cloud pass at 65% resolution on desktop;
     // touch devices keep their existing half-resolution path and High keeps full resolution.
-    this.clouds.resolutionScale = touch ? 0.5 : quality === "medium" ? 0.75 : 1;
+    this.clouds.resolutionScale = touch ? 0.5 : quality === "medium" ? 0.65 : 1;
     this.clouds.lightShafts = false;
     this.applyLook();
   }
