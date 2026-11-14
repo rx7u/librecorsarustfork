@@ -7,7 +7,7 @@
 #[no_mangle]
 pub extern "C" fn magic_formula(x: f64, b: f64, c: f64, e: f64) -> f64 {
     let bx = b * x;
-    (c * (bx - e * (bx - bx.atan()).atan())).sin()
+    (c * (bx - e * (bx - bx.atan()))).sin()
 }
 
 /// Evaluate N packed [x, B, C, E] tuples in-place as N results.
@@ -24,7 +24,7 @@ pub unsafe extern "C" fn magic_formula_batch(ptr: *mut f64, count: usize) -> usi
         let c = input[base + 2];
         let e = input[base + 3];
         let bx = b * x;
-        input[base] = (c * (bx - e * (bx - bx.atan()).atan())).sin();
+        input[base] = (c * (bx - e * (bx - bx.atan()))).sin();
     }
     count
 }
