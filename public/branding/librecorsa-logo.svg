@@ -35,6 +35,6 @@
     <polygon points="6,96 26,96 22,103 2,103" fill="#CCFF00" />
     <polygon points="30,96 50,96 46,103 26,103" fill="#00E5FF" />
     <polygon points="54,96 74,96 70,103 50,103" fill="#FF2A3C" />
-    <text x="84" y="104" fill="#8E96AA" font-family="'JetBrains Mono', 'Titillium Web', monospace" font-weight="700" font-size="12.5" letter-spacing="4.2">OPEN-SOURCE 500 HZ MOTORSPORT SIM</text>
+    <text x="84" y="104" fill="#8E96AA" font-family="'JetBrains Mono', 'Titillium Web', monospace" font-weight="700" font-size="12.5" letter-spacing="4.2">RUST EDITION  |  OPEN-SOURCE 500 HZ SIM</text>
   </g>
 </svg>
