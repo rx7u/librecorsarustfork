@@ -226,6 +226,17 @@ function loadTrackGlb(
           return;
         }
         if (!(obj instanceof THREE.Mesh)) return;
+        // Remove separately-authored trees/foliage before material setup and shadow registration.
+        // Keep the circuit, kerbs, barriers, buildings, stands and all collision geometry intact.
+        const treeName = /(?:^|[_\\s-])(trees?|foliage|vegetation)(?:$|[_\\s-])/i;
+        const treeMaterial = (Array.isArray(obj.material) ? obj.material : [obj.material])
+          .some((material) => /tree_(trunk|canopy)|foliage|leaves/i.test(material.name));
+        if (treeName.test(obj.name) || treeName.test(topName) || treeMaterial) {
+          obj.visible = false;
+          obj.castShadow = false;
+          obj.receiveShadow = false;
+          return;
+        }
         if (topName === "Track_Model" && isCutMaterialMesh(obj, cutMaterialNames)) {
           obj.visible = false;
           return;
