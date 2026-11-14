@@ -80,9 +80,9 @@ const SHADOW_DISTANCE_M = 250;
 
 const SKY_SCALE = 4500;
 /** Linear radiance cap for the visible sun disc (bloom threshold is 1.1) */
-const SUN_DISC_MAX_RADIANCE = 30;
+const SUN_DISC_MAX_RADIANCE = 8;
 /** Brings the Sky shader's radiance to this scene's exposure (applies to the PMREM bake too) */
-const SKY_RADIANCE_SCALE = 0.15;
+const SKY_RADIANCE_SCALE = 0.12;
 const ENV_SIZE = 256;
 
 // Warm hazy horizon, picked by eye to sit between the Sky's warm horizon glow
@@ -705,7 +705,7 @@ export function createPostFx(
 
     setQuality(quality: "low" | "medium" | "high"): void {
       composer.multisampling = quality === "high" ? 4 : quality === "medium" ? 2 : 0;
-      bloom.intensity = quality === "high" ? 0.4 : 0;
+      bloom.intensity = quality === "high" ? 0.12 : 0;
     },
 
     setClouds(next): void {
