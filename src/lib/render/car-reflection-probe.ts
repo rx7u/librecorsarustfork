@@ -67,12 +67,16 @@ export class CarReflectionProbe {
 
   setQuality(quality: ReflectionQuality): void {
     if (quality === this.quality) return;
-    const wasOff = this.quality === "off";
     this.quality = quality;
+    // Medium halves each cube face's width and height (one quarter of the pixels), a useful GPU saving on
+    // integrated graphics. High keeps the full 256px probe for sharper paint reflections.
+    const size = quality === "medium" ? CUBE_SIZE / 2 : CUBE_SIZE;
+    if (quality !== "off") this.cubeTarget.setSize(size, size);
+    // Any quality change invalidates the old probe: rebuild all six faces at the new resolution before using it.
+    this.face = 0;
+    this.primed = false;
     // Off: hand the cars back to the sky's environment map
     if (quality === "off") this.applyTo(null);
-    // Back on: the map from before is stale, so the next update films all six faces and hands the cars the new one
-    else if (wasOff) this.primed = false;
   }
 
   /** A car whose materials should reflect the probe (call again after its model swaps in: new materials are caught) */
