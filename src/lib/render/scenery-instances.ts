@@ -22,17 +22,17 @@ type Quality = "low" | "medium" | "high";
 
 /** Share of each tile drawn per graphics quality */
 /** Integrated-GPU friendly: keep full foliage on High, thin distant tile instances on Medium/Low. */
-const DENSITY: Record<Quality, number> = { high: 1, medium: 0.65, low: 0.35 };
+const DENSITY: Record<Quality, number> = { high: 0, medium: 0, low: 0 };
 
 let quality: Quality = "high";
 const meshes = new Set<THREE.InstancedMesh>();
 
 function applyDensity(mesh: THREE.InstancedMesh): void {
   const full = mesh.userData.sceneryFullCount as number;
-  mesh.count = Math.max(1, Math.round(full * DENSITY[quality]));
+  mesh.count = Math.round(full * DENSITY[quality]);
 }
 
-/** Graphics quality: how many of the trees and shrubs to draw (remembered for scenery that loads later) */
+/** Trees and shrubs are disabled in this performance build; the circuit geometry and built structures remain. */
 export function setSceneryDensity(q: Quality): void {
   quality = q;
   for (const m of meshes) applyDensity(m);
